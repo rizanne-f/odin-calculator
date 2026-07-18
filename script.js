@@ -1,45 +1,77 @@
-let num1 = 0;
-let num2 = 0;
-let operator = "";
+let num1 = null;
+let num2 = null;
+let operator = null;
+let awaitingNewNum = true;
 
 const dispOperation = document.getElementById("operation");
 dispOperation.scrollLeft = dispOperation.scrollWidth - dispOperation.clientWidth;
 
-const dispResults = document.getElementById("results");
 const operators = document.querySelectorAll(".operator");
 const numbers = document.querySelectorAll(".number");
 const equals = document.getElementById("equals");
 const btnClear = document.getElementById("clear")
 
-
 operators.forEach(op => {
     op.addEventListener("click", (e) => {
         dispOperation.scrollLeft = dispOperation.scrollWidth - dispOperation.clientWidth;
+
+        setNumbers()
+        operator = e.target.id;
+        awaitingNewNum = true;
+        current = ""
         
-        dispOperation.textContent += e.target.id
     })
 })
 
+let current = "";
 numbers.forEach(number => {
     number.addEventListener("click", e => {
         dispOperation.scrollLeft = dispOperation.scrollWidth - dispOperation.clientWidth;
-
-        if (dispOperation.textContent === "0") return dispOperation.textContent = e.target.id;
         
-        dispOperation.textContent += e.target.id;
+        if (dispOperation.textContent === "0") {
+            current = e.target.id;
+            dispOperation.textContent = current;
+            return awaitingNewNum = false;
+        }
+        current += e.target.id
+        dispOperation.textContent = current;
+        awaitingNewNum = false;
     })
 })
 
 equals.addEventListener("click", () => {
-    console.log("equals is clicked")
+    if (operator === null || num1 === null) return;
+    if (awaitingNewNum) return;
+        
+    num2 = Number(dispOperation.textContent);
+    num1 = operate(operator, num1, num2);
+    dispOperation.textContent = num1;
+    num2 = null;
+    current = "";
+    awaitingNewNum = true;
 })
 
-clear.addEventListener("click", () => {
+btnClear.addEventListener("click", () => {
     dispOperation.textContent = "0"
-    dispResults.textContent = ""
-    num1 = num2 = 0;
+    num1 = num2 = null;
+    awaitingNewNum = true;
     operator = ""
+    current = ""
 })
+
+function setNumbers() {
+    if (num1 === null) {
+        num1 = Number(current);
+        return;
+    }
+
+    if (awaitingNewNum) return;
+    
+    num2 = Number(dispOperation.textContent);
+    num1 = operate(operator, num1, num2);
+    dispOperation.textContent = num1;
+    num2 = null;
+}
 
 function add(num1, num2) {
     return num1 + num2;
@@ -55,7 +87,7 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
     if (num2 === 0) {
-        alert("Are you an idiot sandwich?")
+        alert("Come on, we can do better than this")
         return 0;
     }
     return num1 / num2;
