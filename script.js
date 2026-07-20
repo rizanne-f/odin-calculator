@@ -117,6 +117,8 @@ function handleEqualsClick() {
 }
 
 function handleRemove() {
+    if (display.textContent.length === 1) return display.textContent = 0;
+
     const content = display.textContent.split("");
     content.pop();
     display.textContent = content.join("");
