@@ -7,10 +7,23 @@ let newOperation = false;
 const display = document.getElementById("display");
 const operators = document.querySelectorAll(".operator");
 const numbers = document.querySelectorAll(".number");
-const equals = document.getElementById("equals");
+const btnEquals = document.getElementById("equals");
 const btnClear = document.getElementById("clear")
 const btnRemove = document.getElementById("remove-last")
 const dialog = document.getElementById("dialog")
+const buttons = document.querySelectorAll("button")
+
+const keyPress = new Audio('./audio/keypress.mp3')
+const notif = new Audio('./audio/notif.mp3'); 
+
+buttons.forEach(button => {
+    button.addEventListener("mousedown", () => {
+        keyPress.currentTime = 0;
+        keyPress.play();
+    })
+    
+    button.addEventListener('contextmenu', e => e.preventDefault());
+})
 
 operators.forEach(op => {
     op.addEventListener("click", (e) => {
@@ -24,19 +37,50 @@ numbers.forEach(number => {
     })
 })
 
-equals.addEventListener("click", () => handleEqualsClick())
+btnEquals.addEventListener("click", () => handleEqualsClick())
 btnClear.addEventListener("click", () => handleClear())
 btnRemove.addEventListener("click", () => handleRemove())
 
 window.addEventListener("keydown", (e) => {
-    const numbers = "1234567890.";
-    const operators = "*-+/";
+    const number = "1234567890.".includes(e.key);
+    const operator = "*-+/".includes(e.key);
+    const equals = e.key === "=" || e.key === "Enter";
+    const backspace = e.key === "Backspace";
+    const esc = e.key === "Escape";
 
-    if (numbers.includes(e.key)) return handleNumbersClick(e.key);
-    if (operators.includes(e.key)) return handleOperationsClick(e.key);
-    if (e.key === "=" || e.key === "Enter") return handleEqualsClick();
-    if (e.key === "Backspace") return handleRemove();
-    if (e.key === "Escape") return handleClear();
+    if (number || operator || equals || backspace || esc) {
+        let button = document.getElementById(e.key);
+
+        if (equals) { button = btnEquals }
+        if (backspace) { button = btnRemove }
+        if (esc) { button = btnClear}
+
+        button.classList.add("active");
+    }
+
+    if (number) return handleNumbersClick(e.key);
+    if (operator) return handleOperationsClick(e.key);
+    if (equals) return handleEqualsClick();
+    if (backspace) return handleRemove();
+    if (esc) return handleClear();
+})
+
+window.addEventListener("keyup", (e) => {
+    const number = "1234567890.".includes(e.key);
+    const operator = "*-+/".includes(e.key);
+    const equals = e.key === "=" || e.key === "Enter";
+    const backspace = e.key === "Backspace";
+    const esc = e.key === "Escape";
+
+    if (number || operator || equals || backspace || esc) {
+        let button = document.getElementById(e.key);
+
+        if (equals) { button = btnEquals }
+        if (backspace) { button = btnRemove }
+        if (esc) { button = btnClear}
+
+        button.classList.remove("active");
+    }
 })
 
 function adjustScrollLocation() {
@@ -131,6 +175,8 @@ function divide(num1, num2) {
     if (num2 === 0) {;
         dialog.classList.add('is-visible');
         setTimeout(() => dialog.classList.remove('is-visible'), 2000);
+        notif.currentTime = 0;
+        notif.play();
         return 0;
     }
     return num1 / num2;
