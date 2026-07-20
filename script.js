@@ -2,95 +2,143 @@ let num1 = null;
 let num2 = null;
 let operator = null;
 let awaitingNewNum = true;
+let newOperation = false;
 
-const dispOperation = document.getElementById("operation");
-dispOperation.scrollLeft = dispOperation.scrollWidth - dispOperation.clientWidth;
-
+const display = document.getElementById("display");
 const operators = document.querySelectorAll(".operator");
 const numbers = document.querySelectorAll(".number");
 const equals = document.getElementById("equals");
 const btnClear = document.getElementById("clear")
+const btnRemove = document.getElementById("remove-last")
+const dialog = document.getElementById("dialog")
 
 operators.forEach(op => {
     op.addEventListener("click", (e) => {
-        dispOperation.scrollLeft = dispOperation.scrollWidth - dispOperation.clientWidth;
-
-        setNumbers()
-        operator = e.target.id;
-        awaitingNewNum = true;
-        current = ""
-        
+        handleOperationsClick(e.target.id);
     })
 })
 
-let current = "";
 numbers.forEach(number => {
     number.addEventListener("click", e => {
-        dispOperation.scrollLeft = dispOperation.scrollWidth - dispOperation.clientWidth;
-        
-        if (dispOperation.textContent === "0") {
-            current = e.target.id;
-            dispOperation.textContent = current;
-            return awaitingNewNum = false;
-        }
-        current += e.target.id
-        dispOperation.textContent = current;
-        awaitingNewNum = false;
+        handleNumbersClick(e.target.id);
     })
 })
 
-equals.addEventListener("click", () => {
-    if (operator === null || num1 === null) return;
-    if (awaitingNewNum) return;
-        
-    num2 = Number(dispOperation.textContent);
-    num1 = operate(operator, num1, num2);
-    dispOperation.textContent = num1;
-    num2 = null;
-    current = "";
-    awaitingNewNum = true;
+equals.addEventListener("click", () => handleEqualsClick())
+btnClear.addEventListener("click", () => handleClear())
+btnRemove.addEventListener("click", () => handleRemove())
+
+window.addEventListener("keydown", (e) => {
+    const numbers = "1234567890.";
+    const operators = "*-+/";
+
+    if (numbers.includes(e.key)) return handleNumbersClick(e.key);
+    if (operators.includes(e.key)) return handleOperationsClick(e.key);
+    if (e.key === "=" || e.key === "Enter") return handleEqualsClick();
+    if (e.key === "Backspace") return handleRemove();
+    if (e.key === "Escape") return handleClear();
 })
 
-btnClear.addEventListener("click", () => {
-    dispOperation.textContent = "0"
-    num1 = num2 = null;
-    awaitingNewNum = true;
-    operator = ""
-    current = ""
-})
+function adjustScrollLocation() {
+    display.scrollLeft = display.scrollWidth - display.clientWidth;
+}
+adjustScrollLocation()
 
-function setNumbers() {
-    if (num1 === null) {
-        num1 = Number(current);
-        return;
+function handleOperationsClick(op) {
+    const displayContent = display.textContent;
+    const operatorClicked = op;
+    adjustScrollLocation();
+
+    if (displayContent === "0" && num1 === null) {
+        if (operatorClicked !== "-") {
+            num1 = 0;
+            operator = operatorClicked;
+            return awaitingNewNum = true;
+        }
+        display.textContent = operatorClicked;
     }
 
-    if (awaitingNewNum) return;
+    if (!awaitingNewNum && num1 === null || newOperation) {
+        num1 = Number(displayContent);
+        operator = operatorClicked;
+        awaitingNewNum = true;
+        return newOperation = false;
+    }
     
-    num2 = Number(dispOperation.textContent);
-    num1 = operate(operator, num1, num2);
-    dispOperation.textContent = num1;
-    num2 = null;
+    if (!awaitingNewNum && num2 === null) {
+        num2 = Number(displayContent);
+        num1 = Math.round(operate(operator, num1, num2) * 100) / 100;
+        operator = operatorClicked;
+        display.textContent = num1;
+        
+        num2 = null;
+        return awaitingNewNum = true;
+    }
+
+    awaitingNewNum = true;
 }
 
-function add(num1, num2) {
-    return num1 + num2;
+function handleNumbersClick(num) {
+    const displayContent = display.textContent;
+    const number = num;
+    adjustScrollLocation();
+
+    if (!awaitingNewNum && displayContent.includes(".") && number === ".") return;
+
+    if (displayContent === "0" && number !== ".") {
+        display.textContent = number;
+        return awaitingNewNum = false;
+    }
+    
+    if (displayContent === "0" && number === ".") {
+        display.textContent += number;
+        return awaitingNewNum = false;
+    }
+
+    if (awaitingNewNum && displayContent !== "-" || awaitingNewNum && number === ".") {
+        display.textContent = (number === ".") ? "0." : number;
+        return awaitingNewNum = false;
+    }
+
+    display.textContent += number;
+    awaitingNewNum = false;
 }
 
-function subtract(num1, num2) {
-    return num1 - num2;
+function handleEqualsClick() {
+    num2 = awaitingNewNum ? null : Number(display.textContent);
+
+    if (num1 === null || num2 === null || operator === null) return;
+
+    num1 = Math.round(operate(operator, num1, num2) * 100) / 100;
+    display.textContent = num1;
+
+    num2 = operator = null;
+    awaitingNewNum = newOperation = true;
 }
 
-function multiply(num1, num2) {
-    return num1 * num2;
+function handleRemove() {
+    const content = display.textContent.split("");
+    content.pop();
+    display.textContent = content.join("");
 }
 
+function add(num1, num2) { return num1 + num2 }
+function subtract(num1, num2) { return num1 - num2 }
+function multiply(num1, num2) { return num1 * num2 }
 function divide(num1, num2) {
-    if (num2 === 0) {
-        alert("Come on, we can do better than this")
+    if (num2 === 0) {;
+        dialog.classList.add('is-visible');
+        setTimeout(() => dialog.classList.remove('is-visible'), 2200);
         return 0;
     }
     return num1 / num2;
+}
+
+function handleClear() {
+    display.textContent = "0";
+    num1 = num2 = null;
+    awaitingNewNum = true;
+    currentNumber = operator = "";
 }
 
 function operate(operator, num1, num2) {

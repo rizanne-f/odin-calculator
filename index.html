@@ -9,11 +9,16 @@
 <body>
     <div id="calculator-container">
         <div id="calculator">
+            <div id="dialog">Come on, we can do better than this 😔</div>
             <div id="title">TOP Calculator Project</div>
-            <div id="display">
-                <div id="operation">0</div>
+            <div id="display-container">
+                <div id="display">0</div>
             </div>
             <div id="keys">
+                <div class="btn-row remove-row">
+                    <button id="clear" class="delete">C</button>
+                    <button id="remove-last" class="delete">⬅</button>
+                </div>
                 <div class="btn-row">
                     <button id="7" class="number">7</button>
                     <button id="8" class="number">8</button>
@@ -33,9 +38,9 @@
                     <button id="-" class="operator">-</button>
                 </div>
                 <div class="btn-row">
-                    <button id="clear">C</button>
-                    <button id="0" class="number">0</button>
                     <button id="equals">=</button>
+                    <button id="0" class="number">0</button>
+                    <button id="." class="number">.</button>
                     <button id="+" class="operator">+</button>
                 </div>
             </div>
