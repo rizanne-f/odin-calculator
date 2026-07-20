@@ -176,6 +176,7 @@ function divide(num1, num2) {
         dialog.classList.add('is-visible');
         setTimeout(() => dialog.classList.remove('is-visible'), 2000);
         notif.currentTime = 0;
+        notif.volume = 0.5;
         notif.play();
         return 0;
     }
