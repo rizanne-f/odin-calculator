@@ -128,7 +128,7 @@ function multiply(num1, num2) { return num1 * num2 }
 function divide(num1, num2) {
     if (num2 === 0) {;
         dialog.classList.add('is-visible');
-        setTimeout(() => dialog.classList.remove('is-visible'), 2200);
+        setTimeout(() => dialog.classList.remove('is-visible'), 2000);
         return 0;
     }
     return num1 / num2;

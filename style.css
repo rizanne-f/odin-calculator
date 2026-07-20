@@ -28,22 +28,24 @@ body {
 }
 
 #dialog {
-    position: absolute;
+    z-index: 1;
     left: 0;
     right: 0;
-    top: -60px;
-    text-align: center;
-    background-color: hsl(237, 68%, 94%);
-    border-radius: 8px;
-    border: 1px solid hsl(237, 68%, 88%);
-    padding: 16px;
+    top: 8px;
+    position: absolute;
+    margin: 16px;
+    padding:8px;
     opacity: 0;
-    visibility: hidden;
+    text-align: center;
+    border-radius: 8px;
+    background-color: #e5e6fa;
+    border: 1px solid #cccef5;
+    visibility: visible;
     transition: opacity 0.5s ease, visibility 0.5s ease, top 0.5s ease;
 }
 
 #dialog.is-visible {
-    top: -74px;
+    top: 0;
     opacity: 1;
     visibility: visible;
 }
@@ -86,6 +88,7 @@ body {
 
 button {
     font-size: 24px;
+    color: black;
     border: 0;
     border-radius: 8px;
 }
