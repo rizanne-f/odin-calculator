@@ -134,18 +134,21 @@ button:active, .active {
     height: 40px;
 }
 
-.number { background-color: hsl(237, 68%, 94%); }
-.number:hover { background-color: hsl(237, 68%, 91%); }
-.number:active { background-color: hsl(237, 68%, 88%); }
+@media (hover: hover) {
+    .number:hover { background-color: hsl(237, 68%, 91%) }
+    .operator:hover { background-color: hsl(351, 100%, 83%) }
+    .delete:hover { background-color: hsl(29, 97%, 83%) }
+    #equals:hover { background-color: hsl(300, 23%, 77%) }
+}
 
-.operator { background-color: hsl(351, 100%, 86%); }
-.operator:hover { background-color: hsl(351, 100%, 83%); }
-.operator:active { background-color: hsl(351, 100%, 80%); }
+.number { background-color: hsl(237, 68%, 94%) }
+.number:active { background-color: hsl(237, 68%, 88%) }
 
-.delete { background-color: hsl(29, 97%, 86%); }
-.delete:hover { background-color: hsl(29, 97%, 83%); }
-.delete:active { background-color: hsl(29, 97%, 80%); }
+.operator { background-color: hsl(351, 100%, 86%) }
+.operator:active { background-color: hsl(351, 100%, 80%) }
 
-#equals { background-color: hsl(300, 23%, 80%); }
-#equals:hover { background-color: hsl(300, 23%, 77%); }
-#equals:active { background-color: hsl(300, 23%, 74%); }
+.delete { background-color: hsl(29, 97%, 86%) }
+.delete:active { background-color: hsl(29, 97%, 80%) }
+
+#equals { background-color: hsl(300, 23%, 80%) }
+#equals:active { background-color: hsl(300, 23%, 74%) }
