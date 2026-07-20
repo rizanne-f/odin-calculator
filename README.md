@@ -6,7 +6,6 @@ Applies knowledge on HTML, CSS, Javascript Basics including:
 * Functions
 * Conditionals
 * DOM Manipulation
-* Events Handling
+* Mouse Events
+* Keyboard Events
 * State Handling
-
-Not including Extra Credit part yet.
