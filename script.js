@@ -104,6 +104,11 @@ function handleOperationsClick(op) {
         display.textContent = operatorClicked;
     }
 
+    if (awaitingNewNum && operatorClicked == "-") {
+        display.textContent = operatorClicked;
+        return awaitingNewNum = false;
+    }
+
     if (!awaitingNewNum && num1 === null || newOperation) {
         num1 = Number(displayContent);
         operator = operatorClicked;
