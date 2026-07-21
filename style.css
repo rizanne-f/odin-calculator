@@ -5,6 +5,10 @@
     font-family: "Google Sans Code", monospace;
 }
 
+body {
+    background-color: hsl(40, 85%, 92%);
+}
+
 #calculator-container {
     display: flex;
     justify-content: center;
@@ -16,6 +20,7 @@
     display: flex;
     gap: 16px;
     padding: 16px;
+    margin: 1rem;
     flex-direction: column;
     border: 2px solid #ddd;
     border-radius: 8px;
