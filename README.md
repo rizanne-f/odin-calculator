@@ -13,3 +13,4 @@ Applies knowledge on HTML, CSS, Javascript Basics including:
 Others:
 * Learned to put audio on every button click
 * Used Media Query to only trigger hover state on desktop browsers
+* Embedded font from Google Font website
