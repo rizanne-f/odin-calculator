@@ -24,11 +24,17 @@ buttons.forEach(button => {
         keyPress.play();
     });
     
+    button.addEventListener("touchstart", () => {
+        e.preventDefault();
+        keyPress.currentTime = 0;
+        keyPress.play();
+    }, { passive: false });
+    
     button.addEventListener('contextmenu', e => e.preventDefault());
 })
 
 operators.forEach(op => {
-    op.addEventListener("click", e => {
+    op.addEventListener("click", (e) => {
         handleOperationsClick(e.target.id);
     }); 
 })
@@ -43,7 +49,7 @@ btnEquals.addEventListener("click", () => handleEqualsClick());
 btnClear.addEventListener("click", () => handleClear());
 btnRemove.addEventListener("click", () => handleRemove());
 
-window.addEventListener("keydown", e => {
+window.addEventListener("keydown", (e) => {
     const number = "1234567890.".includes(e.key);
     const operator = "*-+/".includes(e.key);
     const equals = e.key === "=" || e.key === "Enter";
@@ -67,7 +73,7 @@ window.addEventListener("keydown", e => {
     if (esc) return handleClear();
 })
 
-window.addEventListener("keyup", e => {
+window.addEventListener("keyup", (e) => {
     const number = "1234567890.".includes(e.key);
     const operator = "*-+/".includes(e.key);
     const equals = e.key === "=" || e.key === "Enter";

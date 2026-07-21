@@ -41,7 +41,7 @@ body {
     background-color: #e5e6fa;
     border: 1px solid #cccef5;
     visibility: visible;
-    transition: opacity 0.5s ease, visibility 0.5s ease, top 0.5s ease;
+    transition: opacity 1s ease, visibility 1s ease, top 1s ease;
 }
 
 #dialog.is-visible {
